@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُوجّه مشاريع GitHub الذكي | تطوير كريم عمر</title>
+    <meta name="description" content="أداة احترافية متطورة لتحليل وتوجيه روابط ومستودعات جيتهاب، مطورة بواسطة كريم عمر.">
+    <meta name="author" content="Kareem Omar">
+    
+    <meta property="og:title" content="مُوجّه مشاريع GitHub الذكي | كود احترافي">
+    <meta property="og:description" content="قم بتحليل روابط جيتهاب واستخراج كافة المسارات بضغطة زر واحدة.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kemo-omar.github.io/Kareem">
+
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --panel-bg: rgba(22, 27, 34, 0.8);
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent-glow: #58a6ff;
+            --neon-purple: #ab7dff;
+            --btn-green: #238636;
+            --btn-green-hover: #2ea043;
+        }
+
+        /* أنيميشن دخول الصفحة */
+        @keyframes pageLoad {
+            from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(88, 166, 255, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(88, 166, 255, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(88, 166, 255, 0.2); }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 50%, #1e2633 0%, #0b0e14 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            animation: pageLoad 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+        }
+
+        /* شارة المطور فوق الكارد */
+        .dev-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #1f6feb, var(--neon-purple));
+            color: white;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(31, 111, 235, 0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-zone {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #f0f6fc;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .subtitle a {
+            color: var(--accent-glow);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            border-bottom: 1px dashed var(--accent-glow);
+        }
+
+        .subtitle a:hover {
+            color: var(--neon-purple);
+            border-bottom-color: var(--neon-purple);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px;
+            background: rgba(13, 17, 23, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #f0f6fc;
+            text-align: left;
+            direction: ltr;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:focus {
+            border-color: var(--accent-glow);
+            outline: none;
+            animation: pulseGlow 2s infinite;
+        }
+
+        .btn-zone {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px 22px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 1px solid rgba(240,246,252,0.05);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .btn-profile {
+            background-color: #1f6feb;
+            color: white;
+            box-shadow: 0 4px 15px rgba(31, 111, 235, 0.2);
+        }
+        .btn-profile:hover {
+            background-color: #388bfd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
+        }
+
+        .btn-code {
+            background-color: var(--btn-green);
+            color: white;
+            box-shadow: 0 4px 15px rgba(35, 134, 54, 0.2);
+        }
+        .btn-code:hover {
+            background-color: var(--btn-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
+        }
+
+        /* لوحة التوجيه والروابط الذكية السحرية */
+        .results-panel {
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            margin-top: 20px;
+            display: none;
+            animation: pageLoad 0.4s ease forwards;
+        }
+
+        .info-badge {
+            display: flex;
+            justify-content: space-around;
+            background: #161b22;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-badge span strong { color: var(--neon-purple); }
+
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(22, 27, 34, 0.6);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(48, 54, 61, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .link-row:hover {
+            border-color: rgba(88, 166, 255, 0.3);
+            background: rgba(22, 27, 34, 0.9);
+            transform: translateX(-3px);
+        }
+
+        .link-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #f0f6fc;
+        }
+
+        .link-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-icon-btn {
+            background: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            font-size: 12px;
+            border-radius: 6px;
+            flex: none;
+        }
+
+        .action-icon-btn:hover {
+            background: #30363d;
+            color: #f0f6fc;
+        }
+
+        .btn-go {
+            border-color: var(--accent-glow);
+            color: var(--accent-glow);
+        }
+        .btn-go:hover { background: rgba(56, 139, 253, 0.15); }
+
+        /* تذييل حقوق الملكية الاحترافي */
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            animation: pageLoad 1.2s ease forwards;
+        }
+
+        footer a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        footer a:hover { color: var(--accent-glow); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="dev-badge">PRO MAX EDITION</div>
+
+    <div class="header-zone">
+        <h2>مُوجّه مشاريع GitHub الذكي 🚀</h2>
+        <div class="subtitle">
+            تم التطوير بحب بواسطة الفائز <a href="https://kemo-omar.github.io/Kareem" target="_blank">كريم عمر (Kareem Omar)</a>
+        </div>
+    </div>
+    
+    <div class="input-group">
+        <input type="text" id="githubLink" placeholder="ضع رابط الحساب أو المستودع هنا..." oninput="liveAnalyze()">
+    </div>
+    
+    <div class="btn-zone">
+        <button class="btn-profile" onclick="goTo('profile')">👤 زيارة البروفايل</button>
+        <button class="btn-code" onclick="goTo('code')">💻 صفحة الكود الرئيسي</button>
+    </div>
+
+    <div id="resultsPanel" class="results-panel">
+        <div class="info-badge">
+            <span>المطور المستهدف: <strong id="badgeUser">-</strong></span>
+            <span>المستودع المستخرج: <strong id="badgeRepo">-</strong></span>
+        </div>
+        
+        <div class="links-grid" id="linksGrid">
+            </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 جميع الحقوق محفوظة. صُنع بواسطة <a href="https://kemo-omar.github.io/Kareem" target="_blank">كريم عمر</a>.
+</footer>
+
+<script>
+// المحرك الذكي لتنظيف وتفكيك الروابط بنظام الذكاء العكسي
+function cleanGitHubUrl(url) {
+    try {
+        let cleanUrl = url.trim().split('#')[0].split('?')[0];
+        
+        if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+            cleanUrl = 'https://' + cleanUrl;
+        }
+
+        let urlObj = new URL(cleanUrl);
+        let username = "";
+        let repo = "";
+        
+        if (urlObj.hostname.endsWith('.github.io')) {
+            username = urlObj.hostname.split('.')[0];
+            let pathParts = urlObj.pathname.split('/').filter(part => part !== "");
+            if (pathParts.length > 0) {
+                repo = pathParts[0];
+            }
+        } 
+        else if (urlObj.hostname === 'github.com' || urlObj.hostname === 'www.github.com') {
+            let pathParts = urlObj.pathname.split('/').filter(part => part !== "");
+            if (pathParts.length > 0) username = pathParts[0];
+            if (pathParts.length > 1) repo = pathParts[1];
+        } else {
+            return null;
+        }
+        
+        return username ? { username, repo } : null;
+    } catch (error) {
+        return null;
+    }
+}
+
+// دالة التحليل اللحظي والأنيميشن التلقائي للروابط
+function liveAnalyze() {
+    let inputUrl = document.getElementById('githubLink').value;
+    let githubData = cleanGitHubUrl(inputUrl);
+    let panel = document.getElementById('resultsPanel');
+    
+    if (!githubData) {
+        panel.style.display = 'none';
+        return;
+    }
+    
+    document.getElementById('badgeUser').innerText = githubData.username;
+    document.getElementById('badgeRepo').innerText = githubData.repo ? githubData.repo : 'بروفايل عام فقط';
+    
+    let generatedLinks = [
+        { label: "🔗 رابط الحساب الرسمي (Profile)", url: `https://github.com/${githubData.username}` },
+        { label: "🗂️ المستودعات والمشاريع الكاملة (Repositories)", url: `https://github.com/${githubData.username}?tab=repositories` }
+    ];
+
+    if (githubData.repo) {
+        generatedLinks.push(
+            { label: "💻 كود المستودع المباشر (Source Code)", url: `https://github.com/${githubData.username}/${githubData.repo}` },
+            { label: "🚀 صفحة الويب المستضافة (GitHub Pages)", url: `https://${githubData.username}.github.io/${githubData.repo}/` },
+            { label: "⚠️ المشاكل والتقارير المفتوحة (Issues)", url: `https://github.com/${githubData.username}/${githubData.repo}/issues` },
+            { label: "🔄 طلبات سحب الأكواد (Pull Requests)", url: `https://github.com/${githubData.username}/${githubData.repo}/pulls` },
+            { label: "📦 حزم الإصدارات الجاهزة (Releases)", url: `https://github.com/${githubData.username}/${githubData.repo}/releases` }
+        );
+    }
+
+    let gridHtml = "";
+    generatedLinks.forEach((item) => {
+        gridHtml += `
+            <div class="link-row">
+                <span class="link-label">${item.label}</span>
+                <div class="link-actions">
+                    <button class="action-icon-btn btn-go" onclick="window.open('${item.url}', '_blank')">انطلاق</button>
+                    <button class="action-icon-btn" onclick="copyToClipboard('${item.url}', this)">نسخ</button>
+                </div>
+            </div>
+        `;
+    });
+    
+    document.getElementById('linksGrid').innerHTML = gridHtml;
+    panel.style.display = 'block';
+}
+
+// دالة الأزرار الكبيرة العلوية
+function goTo(destination) {
+    let inputUrl = document.getElementById('githubLink').value;
+    if (!inputUrl) return;
+    
+    let githubData = cleanGitHubUrl(inputUrl);
+    if (!githubData) return;
+    
+    let targetUrl = (destination === 'profile') 
+        ? `https://github.com/${githubData.username}`
+        : (githubData.repo ? `https://github.com/${githubData.username}/${githubData.repo}` : `https://github.com/${githubData.username}?tab=repositories`);
+    
+    window.open(targetUrl, '_blank');
+}
+
+// دالة النسخ التفاعلية الذكية مع تأثير تغذية بصرية راجعة
+function copyToClipboard(text, element) {
+    navigator.clipboard.writeText(text).then(() => {
+        let originalText = element.innerText;
+        element.innerText = "تم الحفظ! ✓";
+        element.style.color = "#2da44e";
+        element.style.borderColor = "#2da44e";
+        setTimeout(() => {
+            element.innerText = originalText;
+            element.style.color = "var(--text-main)";
+            element.style.borderColor = "var(--border-color)";
+        }, 1200);
+    });
+}
+</script>
+
+</body>
+</html>
